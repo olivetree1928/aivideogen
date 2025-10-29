@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
     // 获取当前用户会话
     const session = await getServerSession(authOptions);
     
-    if (!session?.user?.id) {
+    if (!session?.user?.uuid) {
       return NextResponse.json(
         { error: "Unauthorized" },
         { status: 401 }
@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
     }
 
     // 获取当前用户的积分使用记录
-    const creditUsage = await getCreditUsageByUserId(session.user.id);
+    const creditUsage = await getCreditUsageByUserId(session.user.uuid);
     
     if (!creditUsage) {
       return NextResponse.json(
