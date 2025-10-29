@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
-import { authOptions } from "../auth/[...nextauth]/route";
+import { authOptions } from "@/lib/auth";
 import { getCreditUsageByUserId, updateCreditUsage } from "@/backend/service/credit_usage";
 
 export async function POST(request: NextRequest) {
