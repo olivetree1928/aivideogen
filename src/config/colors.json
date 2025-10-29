@@ -1,0 +1,29 @@
+{
+  "themes": {
+    "light": {
+      "name": "Light Theme",
+      "colors": {
+        "primary": "220 100% 50%",
+        "primary-dark": "220 100% 40%",
+        "secondary": "220 60% 90%",
+        "accent": "220 100% 60%",
+        "background": "0 0% 100%",
+        "foreground": "220 10% 10%",
+        "muted": "220 10% 60%"
+      }
+    },
+    "dark": {
+      "name": "Dark Theme",
+      "colors": {
+        "primary": "220 100% 65%",
+        "primary-dark": "220 100% 55%",
+        "secondary": "220 13% 18%",
+        "accent": "220 100% 75%",
+        "background": "220 13% 9%",
+        "foreground": "220 9% 95%",
+        "muted": "220 9% 60%"
+      }
+    }
+  },
+  "currentTheme": "light"
+}
