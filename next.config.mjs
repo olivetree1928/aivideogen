@@ -4,7 +4,18 @@ const withNextIntl = createNextIntlPlugin();
  
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // Enable static exports for GitHub Pages
+    output: "export",
+    
+    // Set base path for GitHub Pages (repository name)
+    basePath: "/aivideogen",
+    
+    // Asset prefix for GitHub Pages
+    assetPrefix: "/aivideogen",
+    
+    // Disable server-based image optimization for static export
     images: {
+        unoptimized: true,
         remotePatterns: [
           {
             protocol: 'https',
@@ -22,6 +33,9 @@ const nextConfig = {
           },
         ],
       },
+      
+    // Disable trailing slash for GitHub Pages compatibility
+    trailingSlash: true,
 };
  
 export default withNextIntl(nextConfig);
