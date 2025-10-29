@@ -3,12 +3,14 @@
 import * as React from "react";
 import { NextUIProvider } from "@nextui-org/system";
 import { useRouter } from "next/navigation";
-import { ThemeProviderProps } from "next-themes/dist/types";
 import { ThemeProvider as ColorThemeProvider } from "@/contexts/theme";
 
 export interface ProvidersProps {
   children: React.ReactNode;
-  themeProps?: ThemeProviderProps;
+  themeProps?: {
+    attribute?: string;
+    defaultTheme?: string;
+  };
 }
 
 export function Providers({ children, themeProps }: ProvidersProps) {
