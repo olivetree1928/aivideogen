@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { checkCreditUsageByUserId, reducePeriodRemainCountByUserId } from "@/backend/service/credit_usage";
-import Replicate from "replicate";
+import Replicate, { WebhookEventType } from "replicate";
 import { ResponseCodeEnum } from "@/backend/type/enum/response_code_enum";
 import { createEffectResult } from "@/backend/service/effect_result";
 import { genEffectResultId } from "@/backend/utils/genId";
@@ -123,12 +123,12 @@ const createOptions = async (formData: FormData) => {
     model: model,
     input: input,
     webhook: "",
-    webhook_events_filter: [] as string[],
+    webhook_events_filter: [] as WebhookEventType[],
   };
 
   if (WEBHOOK_HOST && WEBHOOK_HOST.startsWith('https://')) {
     options.webhook = `${WEBHOOK_HOST}/api/webhook/replicate`;
-    options.webhook_events_filter = ["start", "completed"];
+    options.webhook_events_filter = ["start", "completed"] as WebhookEventType[];
   }
   return options;
 }

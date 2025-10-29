@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import Replicate from "replicate";
+import Replicate, { WebhookEventType } from "replicate";
 import { createEffectResult } from "@/backend/service/effect_result";
 import { genEffectResultId } from "@/backend/utils/genId";
 import { generateCheck } from "@/backend/service/generate-_check";
@@ -49,7 +49,7 @@ export async function POST(request: Request) {
   // 构建webhook参数（只有在有有效HTTPS WEBHOOK_HOST时才添加）
   const webhookParams = (WEBHOOK_HOST && WEBHOOK_HOST.startsWith('https://')) ? {
     webhook: `${WEBHOOK_HOST}/api/webhook/replicate`,
-    webhook_events_filter: ["start", "completed"]
+    webhook_events_filter: ["start", "completed"] as WebhookEventType[]
   } : {};
   
   if (version && version !== null) {
