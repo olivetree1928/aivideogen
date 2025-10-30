@@ -27,6 +27,63 @@ export default function ThemeSwitcher() {
     setTheme(key);
   };
 
+  // 预构建所有菜单项
+  const renderThemeItems = () => {
+    const items = [];
+    
+    // Light themes section
+    items.push(
+      <DropdownItem key="light-themes" className="opacity-50 cursor-default" textValue="Light Themes">
+        <span className="text-xs font-semibold text-muted-foreground">Light Themes</span>
+      </DropdownItem>
+    );
+    
+    // Light theme items
+    lightThemes.forEach(([key, theme]) => {
+      items.push(
+        <DropdownItem 
+          key={key} 
+          textValue={theme.name}
+          startContent={
+            <div 
+              className="w-4 h-4 rounded-full border border-gray-300"
+              style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
+            />
+          }
+        >
+          {theme.name}
+        </DropdownItem>
+      );
+    });
+    
+    // Dark themes section
+    items.push(
+      <DropdownItem key="dark-themes" className="opacity-50 cursor-default" textValue="Dark Themes">
+        <span className="text-xs font-semibold text-muted-foreground">Dark Themes</span>
+      </DropdownItem>
+    );
+    
+    // Dark theme items
+    darkThemes.forEach(([key, theme]) => {
+      items.push(
+        <DropdownItem 
+          key={key} 
+          textValue={theme.name}
+          startContent={
+            <div 
+              className="w-4 h-4 rounded-full border border-gray-600"
+              style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
+            />
+          }
+        >
+          {theme.name}
+        </DropdownItem>
+      );
+    });
+    
+    return items;
+  };
+
   return (
     <Dropdown>
       <DropdownTrigger>
@@ -54,44 +111,7 @@ export default function ThemeSwitcher() {
         }}
         className="max-w-xs"
       >
-        <DropdownItem key="light-themes" className="opacity-50 cursor-default" textValue="Light Themes">
-          <span className="text-xs font-semibold text-muted-foreground">Light Themes</span>
-        </DropdownItem>
-        {lightThemes.map(([key, theme]) => {
-          return (
-            <DropdownItem 
-              key={key} 
-              textValue={theme.name}
-              startContent={
-                <div 
-                  className="w-4 h-4 rounded-full border border-gray-300"
-                  style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
-                />
-              }
-            >
-              {theme.name}
-            </DropdownItem>
-          );
-        })}
-        <DropdownItem key="dark-themes" className="opacity-50 cursor-default" textValue="Dark Themes">
-          <span className="text-xs font-semibold text-muted-foreground">Dark Themes</span>
-        </DropdownItem>
-        {darkThemes.map(([key, theme]) => {
-          return (
-            <DropdownItem 
-              key={key} 
-              textValue={theme.name}
-              startContent={
-                <div 
-                  className="w-4 h-4 rounded-full border border-gray-600"
-                  style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
-                />
-              }
-            >
-              {theme.name}
-            </DropdownItem>
-          );
-        })}
+        {renderThemeItems()}
       </DropdownMenu>
     </Dropdown>
   );
