@@ -57,37 +57,41 @@ export default function ThemeSwitcher() {
         <DropdownItem key="light-themes" className="opacity-50 cursor-default" textValue="Light Themes">
           <span className="text-xs font-semibold text-muted-foreground">Light Themes</span>
         </DropdownItem>
-        {lightThemes.map(([key, theme]) => (
-          <DropdownItem 
-            key={key} 
-            textValue={theme.name}
-            startContent={
-              <div 
-                className="w-4 h-4 rounded-full border border-gray-300"
-                style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
-              />
-            }
-          >
-            {theme.name}
-          </DropdownItem>
-        ))}
+        {lightThemes.map(([key, theme]) => {
+          return (
+            <DropdownItem 
+              key={key} 
+              textValue={theme.name}
+              startContent={
+                <div 
+                  className="w-4 h-4 rounded-full border border-gray-300"
+                  style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
+                />
+              }
+            >
+              {theme.name}
+            </DropdownItem>
+          );
+        })}
         <DropdownItem key="dark-themes" className="opacity-50 cursor-default" textValue="Dark Themes">
           <span className="text-xs font-semibold text-muted-foreground">Dark Themes</span>
         </DropdownItem>
-        {darkThemes.map(([key, theme]) => (
-          <DropdownItem 
-            key={key} 
-            textValue={theme.name}
-            startContent={
-              <div 
-                className="w-4 h-4 rounded-full border border-gray-600"
-                style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
-              />
-            }
-          >
-            {theme.name}
-          </DropdownItem>
-        ))}
+        {darkThemes.map(([key, theme]) => {
+          return (
+            <DropdownItem 
+              key={key} 
+              textValue={theme.name}
+              startContent={
+                <div 
+                  className="w-4 h-4 rounded-full border border-gray-600"
+                  style={{ backgroundColor: `hsl(${theme.colors.primary})` }}
+                />
+              }
+            >
+              {theme.name}
+            </DropdownItem>
+          );
+        })}
       </DropdownMenu>
     </Dropdown>
   );
