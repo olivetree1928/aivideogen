@@ -77,7 +77,7 @@ export const authOptions: AuthOptions = {
           nickname: dbUser.nickname,
           email: dbUser.email,
           avatar_url: dbUser.avatar_url,
-          created_at: dbUser.created_at,
+          created_at: dbUser.created_at || getIsoTimestr(),
         };
       }
       return token;
