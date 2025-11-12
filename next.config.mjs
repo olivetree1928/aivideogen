@@ -1,41 +1,43 @@
 import createNextIntlPlugin from 'next-intl/plugin';
- 
+
 const withNextIntl = createNextIntlPlugin();
- 
+
 /** @type {import('next').NextConfig} */
+// Only allow static export when explicitly enabled AND not on Vercel
+const isStaticExport = process.env.NEXT_STATIC_EXPORT === 'true' && !process.env.VERCEL;
+const repoBase = process.env.NEXT_GH_BASE || '/aivideogen';
+
 const nextConfig = {
-    // Enable static exports for GitHub Pages
-    output: "export",
-    
-    // Set base path for GitHub Pages (repository name)
-    basePath: "/aivideogen",
-    
-    // Asset prefix for GitHub Pages
-    assetPrefix: "/aivideogen",
-    
-    // Disable server-based image optimization for static export
-    images: {
-        unoptimized: true,
-        remotePatterns: [
-          {
-            protocol: 'https',
-            hostname: 'nextuipro.nyc3.cdn.digitaloceanspaces.com',
-            port: '',
-            pathname: '/**',
-          },
-          {
-            protocol: "https",
-            hostname: "replicate.com",
-          },
-          {
-            protocol: "https",
-            hostname: "replicate.delivery",
-          },
-        ],
+  // Images configuration; when static exporting, disable server optimization
+  images: {
+    unoptimized: isStaticExport,
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'nextuipro.nyc3.cdn.digitaloceanspaces.com',
+        port: '',
+        pathname: '/**',
       },
-      
-    // Disable trailing slash for GitHub Pages compatibility
-    trailingSlash: true,
+      {
+        protocol: 'https',
+        hostname: 'replicate.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'replicate.delivery',
+      },
+    ],
+  },
+
+  // Apply GitHub Pages specific settings only for static export
+  ...(isStaticExport
+    ? {
+        output: 'export',
+        basePath: repoBase,
+        assetPrefix: repoBase,
+        trailingSlash: true,
+      }
+    : {}),
 };
- 
+
 export default withNextIntl(nextConfig);
