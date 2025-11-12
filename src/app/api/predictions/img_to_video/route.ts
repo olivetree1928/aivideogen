@@ -6,17 +6,21 @@ import { createEffectResult } from "@/backend/service/effect_result";
 import { genEffectResultId } from "@/backend/utils/genId";
 import { getUserByUuidAndEmail } from "@/backend/service/user";
 
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
+function getReplicate() {
+  const token = process.env.REPLICATE_API_TOKEN;
+  if (!token) return null;
+  return new Replicate({ auth: token });
+}
+
 const WEBHOOK_HOST = process.env.REPLICATE_URL
 
 export async function POST(request: Request) {
-  if (!process.env.REPLICATE_API_TOKEN) {
-    throw new Error(
-      "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it."
-    );
+  const replicate = getReplicate();
+  if (!replicate) {
+    return NextResponse.json({ detail: "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it." }, { status: 500 });
   }
   const formData = await request.formData();
   const prompt = formData.get("prompt") as string;

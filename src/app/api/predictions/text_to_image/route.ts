@@ -4,17 +4,22 @@ import { createEffectResult } from "@/backend/service/effect_result";
 import { genEffectResultId } from "@/backend/utils/genId";
 import { generateCheck } from "@/backend/service/generate-_check";
 
-const replicate = new Replicate({
-  auth: process.env.REPLICATE_API_TOKEN,
-});
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+function getReplicate() {
+  const token = process.env.REPLICATE_API_TOKEN;
+  if (!token) return null;
+  return new Replicate({ auth: token });
+}
 
 const WEBHOOK_HOST = process.env.REPLICATE_URL
 
 export async function POST(request: Request) {
   try {
     console.log("=== Text to Image API Called ===");
-    
-    if (!process.env.REPLICATE_API_TOKEN) {
+    const replicate = getReplicate();
+    if (!replicate) {
       console.error("REPLICATE_API_TOKEN not found");
       return NextResponse.json({ 
         detail: "The REPLICATE_API_TOKEN environment variable is not set. See README.md for instructions on how to set it." 
