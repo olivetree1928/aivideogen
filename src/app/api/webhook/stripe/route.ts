@@ -20,13 +20,29 @@ import {
   createPaymentHistory,
 } from "@/backend/service/payment_history";
 import { UserSubscriptionStatusEnum } from "@/backend/type/enum/user_subscription_enum";
-const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY!);
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+export const dynamic = "force-dynamic";
+export const runtime = "nodejs";
+
+function getStripe() {
+  const key = process.env.STRIPE_PRIVATE_KEY;
+  if (!key) return null;
+  return new Stripe(key);
+}
 
 export async function POST(req: Request) {
   const body = await req.text();
   const signature = req.headers.get("stripe-signature") as string;
+
+  const stripe = getStripe();
+  const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
+  if (!stripe || !webhookSecret) {
+    console.error("Stripe configuration missing: private key or webhook secret.");
+    return Response.json(
+      { error: "Stripe configuration missing" },
+      { status: 500 }
+    );
+  }
 
   let event: Stripe.Event;
 
