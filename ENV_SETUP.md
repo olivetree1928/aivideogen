@@ -24,6 +24,8 @@ cp .env.example .env
 - `NEXT_PUBLIC_DOMAIN` - 应用的主域名
 - `NEXT_PUBLIC_APP_URL` - 应用的完整 URL
 - `NODE_ENV` - 环境类型 (development/staging/production)
+- `NEXT_PUBLIC_CANONICAL_DOMAIN` - 规范化重定向的目标主域名（如 `imaginevisual.cc`）
+- `ENABLE_CANONICAL_REDIRECT` - 是否启用域名规范化重定向（默认关闭，设为 `"true"` 才启用）
 
 ### 数据库配置
 - `POSTGRES_URL` - PostgreSQL 数据库连接字符串
@@ -110,6 +112,8 @@ cp .env.example .env
 ```bash
 vercel env add NEXT_PUBLIC_DOMAIN
 vercel env add POSTGRES_URL
+vercel env add NEXT_PUBLIC_CANONICAL_DOMAIN
+vercel env add ENABLE_CANONICAL_REDIRECT
 # ... 添加其他环境变量
 ```
 
@@ -126,12 +130,13 @@ docker run -d --env-file .env.production your-app-image
 2. **CORS 错误**：检查 `CORS_ORIGIN` 设置
 3. **数据库连接失败**：验证 `POSTGRES_URL` 格式和权限
 4. **OAuth 失败**：确认回调 URL 与 Google Console 设置一致
+5. **域名重定向循环**：如果发现 `Too many redirects` 或线上不可访问，设置 `ENABLE_CANONICAL_REDIRECT="false"` 或在托管层（如 Vercel）删除相反方向的跳转规则，避免互相“打架”。
 
 ## 获取 API 密钥
 
 ### Google OAuth
 1. 访问 [Google Cloud Console](https://console.cloud.google.com/)
-2. 创建项目并启用 Google+ API
+2. 创建项目并启用相关 API
 3. 创建 OAuth 2.0 客户端 ID
 
 ### Stripe

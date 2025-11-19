@@ -17,13 +17,18 @@ const intlMiddleware = createMiddleware({
   localeDetection: false,
 });
 
+// Env-controlled canonical redirect
+const CANONICAL_DOMAIN = process.env.NEXT_PUBLIC_CANONICAL_DOMAIN || "imaginevisual.cc";
+// Default OFF to avoid production redirect loops unless explicitly enabled
+const ENABLE_CANONICAL_REDIRECT = process.env.ENABLE_CANONICAL_REDIRECT === "true";
+
 export default function middleware(req: NextRequest) {
   const host = req.headers.get("host") || "";
 
-  // Enforce canonical domain: redirect www.imaginevisual.cc -> imaginevisual.cc
-  if (host.startsWith("www.imaginevisual.cc")) {
+  // Enforce canonical domain: redirect www.<domain> -> <domain>
+  if (ENABLE_CANONICAL_REDIRECT && host === `www.${CANONICAL_DOMAIN}`) {
     const url = req.nextUrl.clone();
-    url.hostname = "imaginevisual.cc";
+    url.hostname = CANONICAL_DOMAIN;
     url.protocol = "https";
     return NextResponse.redirect(url, 308);
   }
